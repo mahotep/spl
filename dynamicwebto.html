@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Logowanie</title>
+    <script type='text/javascript' src='./jquery-3.4.1.min.js' > </script>
+    <script type='text/javascript' src="./js/jspdf.js"></script>
+    <script type='text/javascript' src="./js/jspdf.plugin.standard_fonts_metrics.js"></script>
+    <script type='text/javascript' src="./js/jspdf.plugin.split_text_to_size.js"></script>
+    <script type='text/javascript' src="./js/jspdf.plugin.from_html.js"></script>
+    <!-- <script type='text/javascript' src="./js/jspdf.plugin.addhtml.js"></script>      -->
+    <script type='text/javascript' src="./html2canvas.js"></script>
+
+<script language = 'JavaScript' type = 'text/javascript' >
+        $(document).ready(function () {               
+            var d_canvas = document.getElementById('canvas');
+            var context = d_canvas.getContext('2d');
+            context.moveTo(20, 20);
+            context.lineTo(100, 20);
+            context.fillStyle = "#999";
+            context.beginPath();
+            context.arc(100, 100, 75, 0, 2 * Math.PI);
+            context.fill();
+            context.fillStyle = "orange";
+            context.fillRect(20, 20, 50, 50);
+            context.font = "24px Helvetica";
+            context.fillStyle = "#000";
+            context.fillText("Canvas", 50, 130);
+
+
+            $('#download').click(function () {
+                alert();
+                html2canvas($("#canvas"), {
+                    onrendered: function (canvas) {
+                        var imgData = canvas.toDataURL(
+                                'image/png');
+                        var doc = new jsPDF('p', 'mm');
+                        doc.addImage(imgData, 'PNG', 10, 10);
+                        doc.save('sample-file.pdf');
+                    }
+                });
+            });
+        });
+
+        function demoPDF() {
+            var doc = new jsPDF('p', 'pt', 'letter');
+
+            var source = $('#loadPDFDiv')[0];
+            doc.fromHTML(source, 15, 15, {'width': 180});
+            doc.output("dataurlnewwindow");
+        }
+     
+    function demoImages() {
+        // Because of security restrictions, getImageFromUrl will
+        // not load images from other domains.  Chrome has added
+        // security restrictions that prevent it from loading images
+        // when running local files.  Run with: chromium --allow-file-access-from-files --allow-file-access
+        // to temporarily get around this issue.
+        var getImageFromUrl = function(url, callback) {
+            var img = new Image, data, ret={data: null, pending: true};
+            
+            img.onError = function() {
+                throw new Error('Cannot load image: "'+url+'"');
+            }
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                document.body.appendChild(canvas);
+                canvas.width = img.width;
+                canvas.height = img.height;
+    
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                // Grab the image as a jpeg encoded in base64, but only the data
+                data = canvas.toDataURL('image/jpeg').slice('data:image/jpeg;base64,'.length);
+                // Convert the data to binary form
+                data = atob(data)
+                document.body.removeChild(canvas);
+    
+                ret['data'] = data;
+                ret['pending'] = false;
+                if (typeof callback === 'function') {
+                    callback(data);
+                }
+            }
+            img.src = url;
+    
+            return ret;
+        }
+    
+        // Since images are loaded asyncronously, we must wait to create
+        // the pdf until we actually have the image data.
+        // If we already had the jpeg image binary data loaded into
+        // a string, we create the pdf without delay.
+        var createPDF = function(imgData) {
+            var doc = new jsPDF();
+    
+            doc.addImage(imgData, 'JPEG', 10, 10, 50, 50);
+            doc.addImage(imgData, 'JPEG', 70, 10, 100, 120);
+    
+            // Output as Data URI
+            doc.output('datauri');
+        }
+    
+        getImageFromUrl('thinking-monkey.jpg', createPDF);
+    }
+</script>
+</head>
+
+<body>
+        <a href="javascript:demoImages()" class="button">Run Code</a>
+<div id="loadPDFDiv">
+ <h4 style="padding-bottom: 5px; padding-left: 10px; display: inherit;">List of Alternatives</h4>
+</div>
+<div id="canboy">
+    <canvas id="canvas" width="480" height="320"></canvas> 
+    <button id="download">Download Pdf</button>
+    <button  onclick="demoPDF();">Download</button>
+</div>
+</body>
+</html>

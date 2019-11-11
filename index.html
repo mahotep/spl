@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="normalize.css" rel="stylesheet" type="text/css" />    
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Logowanie</title>
+</head>
+<body>
+    <h1> Logowanie</h1>
+    <div class="left_box">
+        <p>Logownie (wpisz cyfrową wartośc sesa):</p>
+        <form action="login.php" class ="login" method="post">
+            <select name="nazwa">
+                <option>Użytkownik</option>
+                <option>Trener</option>
+            </select>
+            <br><br>
+            SESA:<br>
+            <input type="text" name="sesa" value="">
+            <br>
+            Hasło:<br>
+            <input type="password" name="password" value="">
+            <br><br>
+            <input class="button" type="submit" value="Zaloguj">
+        </form>
+    </div>
+</body>
+</html>

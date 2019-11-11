@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<<<<<<< HEAD
+    <script src="./JsCode.js"></script>
+=======
+    <script type="text/javascript" src='./JsCode.js'></script>
+>>>>>>> 5cd84f858b14fe8fc405436ccef77c5244756ad4
+    <title>Document</title>
+    <style>
+        #box1 {
+            width: 300px;
+            height: 300px;
+
+            border: 1px solid black;
+        }
+
+        #box2 {
+            width: 70px;
+            height: 70px;
+
+            position: relative;
+
+            left: 5px;
+            top: 5px;
+
+            margin: 0;
+
+            background: lightblue;
+        }
+    </style>
+
+    
+</head>
+
+<body>
+    <div id="box1">
+        <div id="box2">Przesuń</div>
+    </div>
+    <br>
+
+    <div>
+        <h2> Podpis elektroniczny</h2>
+        <p> podpisz się w ramce , następnie naciśnij klawisz zapisz to twój podpis zapisze się w PDFie</p>
+        <div id="target">
+        <iframe src="./draw.htm" width="600px" height="300px"></iframe>
+        </div>
+        <br>
+    </div>
+    <script>
+        var box2 = document.getElementById('box2');
+
+        box2.addEventListener('touchmove', function (event) {
+            var borderLeft = 0,
+                borderRight = 300 - 70,
+                borderTop = 0,
+                borderBottom = 300 - 70;
+
+            // wylaczamy scrollowanie itp.
+            event.preventDefault();
+
+            // tylko dla pojedynczego palca
+            if (event.targetTouches.length == 1) {
+                var touch = event.targetTouches[0];
+
+                // ustawiamy odpowiednie style
+                if (touch.pageX > borderLeft && touch.pageX < borderRight) { this.style.left = touch.pageX + 'px'; } if (touch.pageY > borderTop && touch.pageY < borderBottom) {
+                    this.style.top = touch.pageY + 'px';
+                }
+                Draw(1, 1, true);
+            }
+        }, false);
+ 
+
+    </script>
+</body>
+
+</html>
